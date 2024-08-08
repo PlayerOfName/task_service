@@ -12,6 +12,9 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * модель Tasks.
+ */
 @Entity
 @Getter
 @Setter
@@ -60,6 +63,9 @@ public class Tasks {
     @Column(name = "created_at")
     private ZonedDateTime created_at;
 
+    /*
+     * исполнители задачи
+     */
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_tasks",
@@ -67,12 +73,23 @@ public class Tasks {
             inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName="id") })
     private Set<Users> tasksUsers = new HashSet<>();
 
+    /*
+     * авторы задачи
+     */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "authors_tasks",
             joinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName="id") },
             inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName="id") })
     private Set<Users> tasksAuthors = new HashSet<>();
 
+    /**
+     * конструктор Tasks.
+     *
+     * @param title       the title
+     * @param description the description
+     * @param status      the status
+     * @param priority    the priority
+     */
     public Tasks(String title, String description, String status, String priority){
         this.title = title;
         this.description = description;

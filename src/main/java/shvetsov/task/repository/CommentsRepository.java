@@ -8,12 +8,30 @@ import shvetsov.task.models.Comments;
 
 import java.util.List;
 
+/**
+ * Comments repository.
+ */
 @Repository
 public interface CommentsRepository extends JpaRepository<Comments, Long> {
 
-    // Пагинация и фильтрация по тексту комментария
-    Page<Comments> findByUserIdAndContentContaining(Long taskId, String content, Pageable pageable);
 
-    // Пагинация без фильтрации
-    Page<Comments> findByUserId(Long taskId, Pageable pageable);
+    /**
+     * поиск комментария по задаче и контенту
+     *
+     * @param taskId   the task id
+     * @param content  the content
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Comments> findByTaskIdAndContentContaining(Long taskId, String content, Pageable pageable);
+
+
+    /**
+     * поиск комментария по задаче
+     *
+     * @param taskId   the task id
+     * @param pageable the pageable
+     * @return the page
+     */
+    Page<Comments> findByTaskId(Long taskId, Pageable pageable);
 }

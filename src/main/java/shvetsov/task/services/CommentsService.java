@@ -56,7 +56,6 @@ public class CommentsService {
         } else {
           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
 
     public ResponseEntity<?> watchCommentTaskId(Long user_id, String content, int page, int size){
@@ -67,9 +66,9 @@ public class CommentsService {
             Page<Comments> commentsPage;
 
             if (!content.isEmpty()) {
-                commentsPage = commentsRepository.findByUserIdAndContentContaining(user_id, content, pageable);
+                commentsPage = commentsRepository.findByTaskIdAndContentContaining(user_id, content, pageable);
             } else {
-                commentsPage = commentsRepository.findByUserId(user_id, pageable);
+                commentsPage = commentsRepository.findByTaskId(user_id, pageable);
             }
 
             List<CommentDTOAnswer> comDTOs = commentsPage.stream()

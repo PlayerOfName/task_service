@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+/**
+ *  Jwt service.
+ */
 @Component
 public class JwtService {
     private final Key key = getSigningKey();
@@ -21,6 +24,12 @@ public class JwtService {
         return Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
     }
 
+    /**
+     * Generate token string.
+     *
+     * @param username the username
+     * @return the string
+     */
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
@@ -30,6 +39,12 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * Validate token boolean.
+     *
+     * @param token the token
+     * @return the boolean
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
@@ -42,6 +57,12 @@ public class JwtService {
         }
     }
 
+    /**
+     * Gets username from token.
+     *
+     * @param token the token
+     * @return the username from token
+     */
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(key)

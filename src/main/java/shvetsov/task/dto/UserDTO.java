@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ *  User dto.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

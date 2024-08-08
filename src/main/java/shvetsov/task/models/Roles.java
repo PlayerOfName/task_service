@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
+/**
+ * модель Roles.
+ */
 @Entity
 @Getter
 @Setter
@@ -28,6 +31,9 @@ public class Roles implements GrantedAuthority {
     @Column(name = "title")
     private String title;
 
+    /*
+     * возвращает зоголовок роли
+     */
     @Override
     public String getAuthority() {
         return this.title;

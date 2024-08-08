@@ -13,14 +13,26 @@ import shvetsov.task.services.TaskService;
 
 import java.util.Optional;
 
+/**
+ * Task controller.
+ */
 @RestController
 @RequestMapping("/tasks")
 @Tag(name = "Tasks API", description = "API для управления задачами")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
 
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+    /**
+     * Created task response entity.
+     *
+     * @param taskDTO the task dto
+     * @return the response entity
+     */
     @Operation(summary = "Создать задачу", description = "Создаёт задачу")
     @PostMapping("/created-task")
     public ResponseEntity<?> createdTask(@RequestBody TaskDTO taskDTO) {
@@ -33,6 +45,16 @@ public class TaskController {
         );
     }
 
+    /**
+     * Watch task user response entity.
+     *
+     * @param user_id  the user id
+     * @param status   the status
+     * @param priority the priority
+     * @param page     the page
+     * @param size     the size
+     * @return the response entity
+     */
     @Operation(summary = "Просмотреть задачи исполнителя", description = "Просматривает задачи исполнителя")
     @GetMapping("/watch-task-user")
     public ResponseEntity<?> watchTaskUser(@RequestParam Long user_id,
@@ -44,12 +66,25 @@ public class TaskController {
         return taskService.watchTasksUser(user_id, status, priority, page, size);
     }
 
+    /**
+     * Update status response entity.
+     *
+     * @param task_id the task id
+     * @param status  the status
+     * @return the response entity
+     */
     @Operation(summary = "Обновить статус задачи", description = "Обновляет статус задачи")
-    @PatchMapping("update-status")
-    public ResponseEntity<?> updateStatus(@RequestParam Long task_id, @RequestParam String status){
+    @PatchMapping("update-status/{taskId}")
+    public ResponseEntity<?> updateStatus(@PathVariable Long task_id, @RequestParam String status){
         return taskService.updateStatus(task_id, status);
     }
 
+    /**
+     * Update task response entity.
+     *
+     * @param task the task
+     * @return the response entity
+     */
     @Operation(summary = "Обновить задачу", description = "Обновляет задачу")
     @PutMapping("update-task")
     public ResponseEntity<?> updateTask(@RequestBody Tasks task){
@@ -62,18 +97,41 @@ public class TaskController {
         );
     }
 
+    /**
+     * Add executor response entity.
+     *
+     * @param task_id     the task id
+     * @param executor_id the executor id
+     * @return the response entity
+     */
     @Operation(summary = "Добавить исполнителя", description = "Добавляет исполнителя")
     @PatchMapping("add-executor")
     public ResponseEntity<?> addExecutor(@RequestParam Long task_id, @RequestParam Long executor_id){
         return taskService.addExecutor(task_id, executor_id);
     }
 
+    /**
+     * Delete task response entity.
+     *
+     * @param task_id the task id
+     * @return the response entity
+     */
     @Operation(summary = "Удачить задачу", description = "Удаляет задачу")
-    @PutMapping("delete-task")
+    @DeleteMapping("delete-task")
     public ResponseEntity<?> deleteTask(@RequestParam Long task_id){
         return taskService.delTask(task_id);
     }
 
+    /**
+     * Watch task author response entity.
+     *
+     * @param author_id the author id
+     * @param status    the status
+     * @param priority  the priority
+     * @param page      the page
+     * @param size      the size
+     * @return the response entity
+     */
     @Operation(summary = "Просмотреть задачи авторов", description = "Просматривает задачи автора")
     @GetMapping("/watch-task-author")
     public ResponseEntity<?> watchTaskAuthor(@RequestParam Long author_id,

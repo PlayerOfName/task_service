@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
+/**
+ * модель Comments.
+ */
 @Entity
 @Setter
 @Getter
@@ -44,6 +47,13 @@ public class Comments {
     @Column(name = "created_at")
     private ZonedDateTime created_at;
 
+    /**
+     * конструктор Comments.
+     *
+     * @param task    the task
+     * @param user    the user
+     * @param content the content
+     */
     public Comments(Tasks task, Users user, String content) {
         this.task = task;
         this.user = user;

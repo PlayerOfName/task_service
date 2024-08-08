@@ -15,6 +15,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Модель пользователя.
+ */
 @Entity
 @Getter
 @Setter
@@ -48,6 +51,11 @@ public class Users implements UserDetails {
     @Column(name = "created_at")
     private ZonedDateTime created_at;
 
+    /*
+     * дата изменения пользователя
+     */
+    @Column(name = "updated_at")
+    private ZonedDateTime updated_at;
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -55,6 +63,9 @@ public class Users implements UserDetails {
             inverseJoinColumns = { @JoinColumn(name = "roles_id", referencedColumnName="id") })
     private Set<Roles> userRoles = new HashSet<Roles>();
 
+    /*
+     * исполнители задач
+     */
     @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_tasks",
@@ -62,12 +73,21 @@ public class Users implements UserDetails {
             inverseJoinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName="id") })
     private Set<Tasks> tasksSetUsers = new HashSet<>();
 
+    /*
+     * авторы задач
+     */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "authors_tasks",
             joinColumns = { @JoinColumn(name = "users_id", referencedColumnName="id") },
             inverseJoinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName="id") })
     private Set<Tasks> tasksSetAuthors = new HashSet<>();
 
+    /**
+     * конструктор пользователя.
+     *
+     * @param email    the email
+     * @param password the password
+     */
     public Users(String email, String password) {
         this.email = email;
         this.password = password;

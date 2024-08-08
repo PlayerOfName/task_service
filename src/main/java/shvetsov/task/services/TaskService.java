@@ -27,15 +27,36 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Task service.
+ */
 @Service
 public class TaskService {
 
-    @Autowired
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+    private final TasksRepository tasksRepository;
 
-    @Autowired
-    private TasksRepository tasksRepository;
+    /**
+     * Instantiates a new Task service.
+     *
+     * @param usersRepository the users repository
+     * @param tasksRepository the tasks repository
+     */
+    public TaskService(UsersRepository usersRepository, TasksRepository tasksRepository) {
+        this.usersRepository = usersRepository;
+        this.tasksRepository = tasksRepository;
+    }
 
+    /**
+     * Created task response entity.
+     *
+     * @param title       the title
+     * @param description the description
+     * @param status      the status
+     * @param priority    the priority
+     * @param email       the email
+     * @return the response entity
+     */
     public ResponseEntity<?> createdTask(String title, String description, String status, String priority, String email){
         if (title != null && description != null && status != null && priority != null && email != null){
             Set<Users> usersSet = new HashSet<>();
@@ -52,6 +73,16 @@ public class TaskService {
 
     }
 
+    /**
+     * Watch tasks author response entity.
+     *
+     * @param author_id the author id
+     * @param status    the status
+     * @param priority  the priority
+     * @param page      the page
+     * @param size      the size
+     * @return the response entity
+     */
     public ResponseEntity<?> watchTasksAuthor(Long author_id, String status, String priority, int page, int size){
         if (usersRepository.findById(author_id).isPresent()){
 
@@ -91,12 +122,25 @@ public class TaskService {
 
     }
 
+    /**
+     * Del task response entity.
+     *
+     * @param task_id the task id
+     * @return the response entity
+     */
     public ResponseEntity<?> delTask(Long task_id){
         Tasks tasks = tasksRepository.findById(task_id).orElseThrow(() -> new RuntimeException("Task not found"));
         tasksRepository.delete(tasks);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
+    /**
+     * Add executor response entity.
+     *
+     * @param task_id     the task id
+     * @param executor_id the executor id
+     * @return the response entity
+     */
     public ResponseEntity<?> addExecutor(Long task_id, Long executor_id){
         Tasks task = tasksRepository.findById(task_id).orElseThrow(() -> new EntityNotFoundException("Task not found"));
         Users user = usersRepository.findById(executor_id).orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -107,6 +151,16 @@ public class TaskService {
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
+    /**
+     * Update task response entity.
+     *
+     * @param id          the id
+     * @param title       the title
+     * @param description the description
+     * @param status      the status
+     * @param priority    the priority
+     * @return the response entity
+     */
     public ResponseEntity<?> updateTask(Long id, String title, String description, String status, String priority){
         Optional<Tasks> task = tasksRepository.findById(id);
         if (task.isPresent()){
@@ -127,6 +181,13 @@ public class TaskService {
         }
     }
 
+    /**
+     * Update status response entity.
+     *
+     * @param task_id the task id
+     * @param status  the status
+     * @return the response entity
+     */
     public ResponseEntity<?> updateStatus(Long task_id, String status){
         Tasks task = tasksRepository.findById(task_id).orElseThrow(() -> new RuntimeException("Task not found"));
         if (status != null){
@@ -138,6 +199,16 @@ public class TaskService {
         }
     }
 
+    /**
+     * Watch tasks user response entity.
+     *
+     * @param user_id  the user id
+     * @param status   the status
+     * @param priority the priority
+     * @param page     the page
+     * @param size     the size
+     * @return the response entity
+     */
     public ResponseEntity<?> watchTasksUser(Long user_id, String status, String priority, int page, int size){
         if (usersRepository.findById(user_id).isPresent()){
 

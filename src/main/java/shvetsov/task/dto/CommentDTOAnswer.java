@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
+/**
+ * Comment dto answer.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

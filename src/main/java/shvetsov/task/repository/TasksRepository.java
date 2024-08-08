@@ -10,9 +10,24 @@ import shvetsov.task.models.Tasks;
 
 import java.util.Optional;
 
+/**
+ * Tasks repository.
+ */
 @Repository
 public interface TasksRepository extends JpaRepository<Tasks, Long>, JpaSpecificationExecutor<Tasks> {
+
+    /**
+     * Find by id.
+     * @param id the id
+     * @return the optional
+     */
     Optional<Tasks> findById(Long id);
 
+    /**
+     * Find all.
+     * @param spec     the spec
+     * @param pageable the pageable
+     * @return the page
+     */
     Page<Tasks> findAll(Specification<Tasks> spec, Pageable pageable);
 }
